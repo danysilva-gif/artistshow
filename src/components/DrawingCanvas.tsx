@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import ColorWheel from "@/components/ColorWheel";
 
 const PALETTE_COLORS = [
   // Row 1 - basics
@@ -350,17 +351,17 @@ export default function DrawingCanvas() {
                 <span className="text-xs font-medium text-muted-foreground">Paleta de Cores</span>
               </div>
 
-              {/* Color wheel (native picker) */}
-              <div className="mb-3 flex flex-col items-center gap-2">
-                <div className="relative">
-                  <input
-                    type="color"
-                    value={customColor}
-                    onChange={(e) => handleCustomColor(e.target.value)}
-                    className="h-32 w-32 cursor-pointer rounded-full border-0 bg-transparent p-0 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-full [&::-webkit-color-swatch]:border-2 [&::-webkit-color-swatch]:border-border [&::-moz-color-swatch]:rounded-full [&::-moz-color-swatch]:border-2"
-                  />
-                </div>
-                <span className="text-xs font-mono text-muted-foreground">{customColor.toUpperCase()}</span>
+              {/* Color wheel */}
+              <div className="mb-3">
+                <ColorWheel
+                  size={160}
+                  value={color}
+                  onChange={(c) => {
+                    setColor(c);
+                    setCustomColor(c);
+                    if (tool === "eraser" || tool === "eyedropper") setTool("brush");
+                  }}
+                />
               </div>
 
               {/* Preset grid */}
