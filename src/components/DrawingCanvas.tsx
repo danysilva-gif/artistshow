@@ -337,42 +337,49 @@ export default function DrawingCanvas() {
           <div className="mx-1 h-6 w-px bg-border" />
 
           {/* Color palette popover */}
+          {/* Color wheel + palette */}
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
-                <div className="h-6 w-6 rounded-md border border-border shadow-sm" style={{ backgroundColor: color }} />
+                <div className="h-6 w-6 rounded-full border-2 border-border shadow-sm" style={{ backgroundColor: color }} />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-3" side="bottom">
-              <div className="mb-2 flex items-center gap-2">
+            <PopoverContent className="w-auto p-4" side="bottom">
+              <div className="mb-3 flex items-center gap-2">
                 <Palette className="h-4 w-4 text-muted-foreground" />
                 <span className="text-xs font-medium text-muted-foreground">Paleta de Cores</span>
               </div>
-              <div className="grid grid-cols-6 gap-1.5 mb-3">
+
+              {/* Color wheel (native picker) */}
+              <div className="mb-3 flex flex-col items-center gap-2">
+                <div className="relative">
+                  <input
+                    type="color"
+                    value={customColor}
+                    onChange={(e) => handleCustomColor(e.target.value)}
+                    className="h-32 w-32 cursor-pointer rounded-full border-0 bg-transparent p-0 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-full [&::-webkit-color-swatch]:border-2 [&::-webkit-color-swatch]:border-border [&::-moz-color-swatch]:rounded-full [&::-moz-color-swatch]:border-2"
+                  />
+                </div>
+                <span className="text-xs font-mono text-muted-foreground">{customColor.toUpperCase()}</span>
+              </div>
+
+              {/* Preset grid */}
+              <div className="grid grid-cols-6 gap-1.5">
                 {PALETTE_COLORS.map((c) => (
                   <button
                     key={c}
                     onClick={() => { setColor(c); setTool(tool === "eraser" || tool === "eyedropper" ? "brush" : tool); }}
-                    className={`h-7 w-7 rounded-md border-2 transition-all hover:scale-110 ${color === c ? "border-foreground ring-1 ring-foreground/30 scale-110" : "border-border"}`}
+                    className={`h-7 w-7 rounded-full border-2 transition-all hover:scale-110 ${color === c ? "border-foreground ring-1 ring-foreground/30 scale-110" : "border-border/50"}`}
                     style={{ backgroundColor: c }}
                   />
                 ))}
               </div>
-              <div className="flex items-center gap-2">
-                <label className="text-xs text-muted-foreground">Custom:</label>
-                <input
-                  type="color"
-                  value={customColor}
-                  onChange={(e) => handleCustomColor(e.target.value)}
-                  className="h-8 w-12 cursor-pointer rounded border border-border bg-transparent"
-                />
-              </div>
             </PopoverContent>
           </Popover>
 
-          {/* Quick colors (top row) */}
+          {/* Quick colors */}
           <div className="flex gap-1">
-            {PALETTE_COLORS.slice(0, 6).map((c) => (
+            {PALETTE_COLORS.slice(0, 8).map((c) => (
               <button
                 key={`q-${c}`}
                 onClick={() => { setColor(c); if (tool === "eraser" || tool === "eyedropper") setTool("brush"); }}
