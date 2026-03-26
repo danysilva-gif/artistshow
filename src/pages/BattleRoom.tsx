@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Users, Send } from "lucide-react";
+import { Users, Send, CheckCircle } from "lucide-react";
 import DrawingCanvas from "@/components/DrawingCanvas";
 import TimerComponent from "@/components/Timer";
 import { mockBattles } from "@/data/mockData";
@@ -10,20 +10,32 @@ import { Button } from "@/components/ui/button";
 
 export default function BattleRoom() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const battle = mockBattles.find((b) => b.id === id) || mockBattles[0];
   const [startedAt] = useState(Date.now());
   const [theme] = useState(battle?.theme || getRandomTheme());
   const [submitted, setSubmitted] = useState(false);
+  const [countdown, setCountdown] = useState(3);
+
+  useEffect(() => {
+    if (!submitted) return;
+    if (countdown <= 0) {
+      navigate(`/voting/${id || battle.id}`);
+      return;
+    }
+    const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [submitted, countdown, navigate, id, battle.id]);
 
   if (submitted) {
     return (
       <div className="container mx-auto flex min-h-[70vh] items-center justify-center px-4">
         <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center">
           <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full gradient-hero">
-            <Send className="h-8 w-8 text-primary-foreground" />
+            <CheckCircle className="h-8 w-8 text-primary-foreground" />
           </div>
           <h2 className="mb-2 font-display text-3xl font-bold">Desenho Enviado!</h2>
-          <p className="text-muted-foreground">Seu desenho foi enviado para votação. Boa sorte! 🎨</p>
+          <p className="text-muted-foreground">Indo para votação em {countdown}s… 🎨</p>
         </motion.div>
       </div>
     );
