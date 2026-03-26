@@ -25,6 +25,7 @@ const App = () => (
           <Route path="/battles" element={<Battles />} />
           <Route path="/battle/:id" element={<BattleRoom />} />
           <Route path="/voting" element={<Voting />} />
+          <Route path="/voting/:battleId" element={<Voting />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
