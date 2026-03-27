@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Clock } from "lucide-react";
 
-const TOTAL_SECONDS = 19 * 60;
+const TOTAL_SECONDS = 15 * 60;
 
 export default function Timer({ startedAt }: { startedAt: number }) {
   const [secondsLeft, setSecondsLeft] = useState(TOTAL_SECONDS);
