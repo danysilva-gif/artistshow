@@ -5,10 +5,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/Navbar";
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 import Battles from "./pages/Battles";
 import BattleRoom from "./pages/BattleRoom";
 import Voting from "./pages/Voting";
 import Leaderboard from "./pages/Leaderboard";
+import ThemeReveal from "./pages/ThemeReveal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,11 +24,13 @@ const App = () => (
         <Navbar />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/battles" element={<Battles />} />
           <Route path="/battle/:id" element={<BattleRoom />} />
           <Route path="/voting" element={<Voting />} />
           <Route path="/voting/:battleId" element={<Voting />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/themes" element={<ThemeReveal />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
